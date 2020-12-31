@@ -1,5 +1,8 @@
-import org.w3c.dom.*;
-import org.xml.sax.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -117,21 +120,25 @@ public class ReturnBook implements ActionListener {
     }
 
     private void updateNode(Document doc) {
+        // Looks for book title. Adds a book to the storage value and finally removes student name from file
         NodeList bookNodeList = doc.getElementsByTagName("book");
         Element bk = null;
         for (int i = 0; i < bookNodeList.getLength(); i++) {
             bk = (Element) bookNodeList.item(i);
             if (bk.getAttribute("id").equals(book.getText())) {
+                //Change storage value by adding 1
                 Node storage = bk.getElementsByTagName("storage").item(0).getFirstChild();
                 String value = Integer.toString(Integer.parseInt(storage.getTextContent()) + 1);
                 storage.setNodeValue(value);
                 NodeList names = bk.getElementsByTagName("students").item(0).getChildNodes();
-                for (int j = 1; j < names.getLength(); j += 2) {
-                    if (names.item(j).getTextContent().equals(studentName.getText())){
-                        bk.removeChild(names.item(j));
+                // Delete student name from file
+                for (int j = 0; j < names.getLength(); j += 1) {
+                    if (names.item(j).getNodeType() == Node.ELEMENT_NODE) {
+                        bk.getElementsByTagName("students").item(0).removeChild(names.item(j));
                     }
                 }
             }
         }
     }
+
 }
