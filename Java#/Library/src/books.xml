@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<books>
+    <book id="Wüstenrose">
+        <author>Waris Dirie</author>
+        <storage>1</storage>
+        <description>
+            This woman who had female circumcision
+            did stuff and how she became a model and how she met her husband
+            and did other stuff and her family is kinda not really
+            but really described in this book.
+        </description>
+        <students>
+            <student>Hans</student>
+            <student>Jürgen</student>
+        </students>
+    </book>
+    <book id="Complete Collection of H.P. Lovecraft">
+        <author>H.P. Lovecraft</author>
+        <storage>5</storage>-
+        <description>
+            A collection... Go guess idiot!
+        </description>
+        <students>
+            <student>Rüdiger</student>
+            <student>Wetzls Pretzls</student>
+        </students>
+    </book>
+</books>
