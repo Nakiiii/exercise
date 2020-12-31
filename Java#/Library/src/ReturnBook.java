@@ -1,5 +1,5 @@
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
+import org.xml.sax.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -91,11 +91,9 @@ public class ReturnBook implements ActionListener {
         try {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.parse("books.xml");
-            doc.getDocumentElement().normalize();
 
             updateNode(doc);
 
-            doc.getDocumentElement().normalize();
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -123,11 +121,16 @@ public class ReturnBook implements ActionListener {
         Element bk = null;
         for (int i = 0; i < bookNodeList.getLength(); i++) {
             bk = (Element) bookNodeList.item(i);
-            if (true) {
+            if (bk.getAttribute("id").equals(book.getText())) {
                 Node storage = bk.getElementsByTagName("storage").item(0).getFirstChild();
                 String value = Integer.toString(Integer.parseInt(storage.getTextContent()) + 1);
                 storage.setNodeValue(value);
-                System.out.println(storage.getNodeValue());
+                NodeList names = bk.getElementsByTagName("students").item(0).getChildNodes();
+                for (int j = 1; j < names.getLength(); j += 2) {
+                    if (names.item(j).getTextContent().equals(studentName.getText())){
+                        bk.removeChild(names.item(j));
+                    }
+                }
             }
         }
     }
