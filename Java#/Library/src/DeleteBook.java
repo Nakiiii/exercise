@@ -18,6 +18,19 @@ public class DeleteBook implements ActionListener {
 
     public DeleteBook(){
 
+        createGUI();
+
+        deleteBook();
+
+    }
+
+    private void deleteBook() {
+
+
+
+    }
+
+    private void createGUI() {
         frame = new JFrame();
         mainContainer = frame.getContentPane();
         frame.getRootPane().setBorder(BorderFactory.createMatteBorder(4,4,4,4, Color.GRAY));
@@ -58,6 +71,6 @@ public class DeleteBook implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.dispose();
+
     }
 }

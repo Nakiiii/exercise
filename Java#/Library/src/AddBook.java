@@ -1,9 +1,23 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class AddBook implements ActionListener {
 
@@ -20,6 +34,13 @@ public class AddBook implements ActionListener {
 
     public AddBook() {
 
+        createGUI();
+        button.addActionListener(this::actionPerformed);
+
+
+    }
+
+    private void createGUI() {
         frame = new JFrame();
         topPanel = new JPanel();
         gridGrid = new JPanel();
@@ -106,6 +127,55 @@ public class AddBook implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document doc = documentBuilder.parse("books.xml");
+
+            addNode(doc);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+
+            StreamResult result = new StreamResult(new File("books.xml"));
+            transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+            transformer.transform(source,result);
+
+            frame.dispose();
+
+        } catch (ParserConfigurationException parserConfigurationException) {
+            parserConfigurationException.printStackTrace();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (SAXException saxException) {
+            saxException.printStackTrace();
+        } catch (TransformerConfigurationException transformerConfigurationException) {
+            transformerConfigurationException.printStackTrace();
+        } catch (TransformerException transformerException) {
+            transformerException.printStackTrace();
+        }
+    }
+
+    private void addNode(Document doc) {
+
+        Node books = doc.getDocumentElement();
+
+        Element newBook = doc.createElement("book");
+        newBook.setAttribute("id", textFields[0].getText());
+        Element author = doc.createElement("author");
+        Element storage = doc.createElement("storage");
+        Element description = doc.createElement("description");
+        Element students = doc.createElement("students");
+
+        author.appendChild(doc.createTextNode(textFields[1].getText()));
+        storage.appendChild(doc.createTextNode(textFields[2].getText()));
+        description.appendChild(doc.createTextNode(area.getText()));
+        newBook.appendChild(author);
+        newBook.appendChild(storage);
+        newBook.appendChild(description);
+        newBook.appendChild(students);
+        books.appendChild(newBook);
 
     }
 }
