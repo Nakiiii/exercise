@@ -1,7 +1,7 @@
 import random
 import tkinter as tk
 import os
-os.chdir("d:\\exercise\\Book\\Chapter 11")
+os.chdir("d:\\exercise\\exercise\\Book\\Chapter 11")
 
 class Game(tk.Frame):
     """GUI application for Monty Hall Problem game."""
