@@ -1,6 +1,9 @@
 import sys
 import random
 import matplotlib.pyplot as plt
+import os
+os.chdir("d://exercise//exercise//Book//Chapter 12")
+
 
 def read_to_list(file):
     with open(file) as in_file:
@@ -90,4 +93,13 @@ def montecarlo(returns):
         duration = int(random.triangular(int(min_years), int(max_years),
                                          int(most_likely_years)))
         end_year = start_year + duration
-        lifespan =
+        lifespan = [i for i in range(start_year, end_year)]
+        bankrupt = 'no'
+
+        #build temporary list for each case
+        lifespan_returns = []
+        lifespan_infl = []
+        for i in lifespan:
+            lifespan_returns.append(returns[i % len(returns)])
+            lifespan_infl.append(infl_rate[i % len(infl_rate)])
+
