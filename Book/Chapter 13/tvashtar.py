@@ -2,6 +2,8 @@ import sys
 import math
 import random
 import pygame as pg
+import os
+os.chdir("d:\\exercise\\exercise\\Book\\Chapter 13")
 
 pg.init()
 
@@ -35,3 +37,61 @@ class Particle(pg.sprite.Sprite):
         self.x, self.y = Particle.VENT_LOCATION_XY
         self.vector()
 
+    def vector(self):
+        """Calculate particle vector at launch."""
+        orient = random.uniform(60, 120)
+        radians = math.radians(orient)
+        self.dx = self.vel * math.cos(radians)
+        self.dy = -self.vel * math.sin(radians)
+
+    def update(self):
+        """Apply gravity, draw path, and handle boundary conditions."""
+        self.dy += Particle.GRAVITY
+        pg.draw.line(self.background, self.color, (self.x, self.y),
+                     (self.x + self.dx, self.y + self.dy))
+        self.x += self.dx
+        self.y += self.dy
+
+        if self.x < 0 or self.x > self.screen.get_width():
+            self.kill()
+        if self.y < 0 or self.y > Particle.IO_SURFACE_Y:
+            self.kill()
+
+def main():
+        """Set up and run game screen and loop."""
+        screen = pg.display.set_mode((639,360))
+        pg.display.set_caption('Io Volcano Simulator')
+        background = pg.image.load('tvashtar_plume.gif')
+
+        # legend
+        legend_font = pg.font.SysFont('None', 24)
+        water_label = legend_font.render('--- H2O', True, WHITE, BLACK)
+        h2s_label = legend_font.render('--- H2S', True, DK_GRAY, BLACK)
+        co2_label = legend_font.render('--- CO2', True, GRAY, BLACK)
+        so2_label = legend_font.render('--- SO2', True, LT_GRAY, BLACK)
+
+        particles = pg.sprite.Group()
+
+        clock = pg.time.Clock()
+
+        while True:
+            clock.tick(25)
+            particles.add(Particle(screen, background))
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+
+            screen.blit(background, (0, 0))
+            screen.blit(water_label, (40, 20))
+            screen.blit(h2s_label, (40, 40))
+            screen.blit(co2_label, (40, 60))
+            screen.blit(so2_label, (40, 80))
+
+            particles.update()
+            particles.draw(screen)
+
+            pg.display.flip()
+
+if __name__ == '__main__':
+    main()
