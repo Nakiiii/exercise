@@ -4,6 +4,8 @@ import math
 import random
 import pygame as pg
 
+os.chdir("d:\\exercise\\exercise\\Book\\Impractical_Python_Projects-master\\Impractical_Python_Projects-master\\Chapter_14")
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
